@@ -1,0 +1,27 @@
+A general indicator of what the commit involves, or what it primarily involves. 
+Emoji should be used at the start as a quick indication, more emoji may be added to this list
+
+:beers: section is completed
+:eggplant: section is fucked
+:hurtsrealbad: made changes to a section and the changes are not working yet
+:cd: added functions for loading
+:chart_with_upwards_trend: data related changes
+:chart_with_downwards_trend: data is exhibiting problems
+:bomb: the entire system is exhibiting problems
+:speaker: sound related changes
+:art: texture related changes
+:japan: weeb related changes
+:b: meme related changes
+:heavy_plus_sign: change involves complex math
+:space_invader: change involves AI/Machine Learning
+:speech_balloon: changes to this file
+:rocket: major progress is made
+:wrench: fixes
+:godmode: added comments
+:newspaper: added documentation
+:tada: something is exciting
+:ghost: something has been removed
+:volcano: something is unstable
+:fu: something is frustrating
+:ramen: I want ramen
+:black_nib: please don't use this
