@@ -3,12 +3,15 @@ import numpy as np
 import pandas as panda
 from loader import *
 
+
+
 def main():
 
     #initialize the pygame module
     pygame.init()
     pygame.font.init()
     if not pygame.font: print('Warning, fonts disabled')
+
     #Logo
     logo = pygame.image.load("Textures/logo.png")
     pygame.display.set_icon(logo)
@@ -22,7 +25,7 @@ def main():
     #default player position
     x = y = 100
     #keeps track of game state
-    state = 1
+    state = 0
     running = True
     #importing assets
     tiles = loadTiles()
@@ -56,10 +59,11 @@ def main():
             fontSize = int(MAXY/10)
             if pygame.font:
             	#There must be a more efficient way of achieving this
-            	fonto = pygame.font.Font("\WINDOWS\Fonts\VLADIMIR.TTF",fontSize)
+                #fontfile = 'a'
+            	fonto = pygame.font.Font(find_font_file('vladimir.ttf'),fontSize)
             	title = fonto.render("It's Pizza Time",1,(255,255,255))
             	td = fonto.size("It's Pizza Time")
-            	fonto = pygame.font.Font("\WINDOWS\Fonts\VLADIMIR.TTF",int(fontSize/2))
+            	fonto = pygame.font.Font(find_font_file('vladimir.ttf'),int(fontSize/2))
             	enter = fonto.render("Press Enter",1,(255,255,255))
             	ed = fonto.size("Press Enter")
             	#Literally just two sentences

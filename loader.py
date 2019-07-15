@@ -1,6 +1,7 @@
 import pandas as panda
 import numpy as np
 import pygame
+import matplotlib.font_manager as fontman
 
 #takes the names of files from tiles.txt and returns a data frame of all the textures
 def loadTiles():
@@ -98,4 +99,16 @@ def tileChecker(map,t,i,j):
                 #This is the case where the road is pointing from 2 to 3
     return (mod,rotor)
 
-
+#finds a given font file in users system, if not found defaults to arial
+def find_font_file(searchFont):
+    fList = fontman.findSystemFonts(fontpaths=None, fontext='ttf')
+    targetFont = []
+    for row in fList:
+        try:
+            if searchFont in row:
+                targetFont.append(row)
+        except TypeError:
+            pass
+    if targetFont == []:
+       return find_font_file('arial.ttf')
+    return targetFont[0]
