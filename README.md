@@ -10,9 +10,9 @@ the "tiles_inteded" txt is a list of tiles that I intend to make as they will be
 The indices are as such, the first digit indicates the type, currently: 0 for edges, 1 for roads and 2 for buildings.
 THe second digit indicates its direction, i.e. the amount adjacent spaces that are of the same type. For instance, rd_124 is a t-junction, a road where the south, east and west sides are also roads, the first, second and fourht directions respectively.
 
+Map of directons, must be read in raw
     3
     |
 2 --+--4
-
     |
     1
