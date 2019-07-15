@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 import pandas as panda
 from loader import *
+from car import *
 
 def main():
 
@@ -12,7 +13,7 @@ def main():
     #Logo
     logo = pygame.image.load("Textures/logo.png")
     pygame.display.set_icon(logo)
-    pygame.display.set_caption("")
+    pygame.display.set_caption("Deliver that pizza")
      
     #Default window size 720p
     screen = pygame.display.set_mode((1280,720),pygame.RESIZABLE)
@@ -22,14 +23,16 @@ def main():
     #default player position
     x = y = 100
     #keeps track of game state
-    state = 1
+    state = 0
     running = True
     #importing assets
     tiles = loadTiles()
     #text = loadText()
-    player = pygame.image.load('Textures/car.png').convert()
+    playerIM = pygame.transform.scale(pygame.image.load('Textures/car.png').convert_alpha(),(40,40))
+    player = car(playerIM)
+    test = playerIM
+    roto = 0
     mapo = np.loadtxt('map.txt',usecols=range(8))
-    print(mapo)
 
     while running:
         #loading current key presses
@@ -49,6 +52,8 @@ def main():
                 MAXY = event.h
         
         if state == 0:
+            roto += 1
+            screen.blit(pygame.transform.rotate(test,roto),(200,50))
             #---------------------#
             #Menu state
             #---------------------#
@@ -68,7 +73,7 @@ def main():
             #change to game state
             if key[pygame.K_RETURN]:
             	state += 1
-            	screen.fill((0,0,0))
+            	
 
 
         if state == 1:
@@ -76,12 +81,11 @@ def main():
             #Game State
             #---------------------#
             printTiles(mapo,tiles,screen)
-            screen.blit(player,(x,y))
+            player.drive(key,mapo)
+            player.print(screen)
+            
             #basic movement
-            if key[pygame.K_w]:y -= 10
-            if key[pygame.K_a]:x -= 10
-            if key[pygame.K_d]:x += 10
-            if key[pygame.K_s]:y += 10
+            
 
         #Quit game
         if key[pygame.K_ESCAPE]:sys.exit
@@ -91,7 +95,7 @@ def main():
 
         #Animate
         pygame.display.update()
-
+        screen.fill((0,0,0))
 
 if __name__=="__main__":
     # call the main function
