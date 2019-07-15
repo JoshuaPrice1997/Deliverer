@@ -22,13 +22,14 @@ def main():
     #default player position
     x = y = 100
     #keeps track of game state
-    state = 0
+    state = 1
     running = True
     #importing assets
     tiles = loadTiles()
     #text = loadText()
     player = pygame.image.load('Textures/car.png').convert()
-    mapo = np.loadtxt('map.txt',usecols=range(7))
+    mapo = np.loadtxt('map.txt',usecols=range(8))
+    print(mapo)
 
     while running:
         #loading current key presses
