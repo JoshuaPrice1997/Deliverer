@@ -13,5 +13,6 @@ THe second digit indicates its direction, i.e. the amount adjacent spaces that a
     3
     |
 2 --+--4
+
     |
     1
