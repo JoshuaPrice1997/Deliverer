@@ -32,8 +32,7 @@ def main():
     player = car(playerIM)
     test = playerIM
     roto = 0
-    mapo = np.loadtxt('map.txt',usecols=range(8))
-
+    mapo = np.loadtxt('map.txt')
     while running:
         #loading current key presses
         key = pygame.key.get_pressed()
@@ -89,6 +88,10 @@ def main():
 
         #Quit game
         if key[pygame.K_ESCAPE]:sys.exit
+        if key[pygame.K_q]:player = car(playerIM)
+        if key[pygame.K_m]:
+        	state -= 1
+        	player = car(playerIM)
 
         #Input Lag
         pygame.time.delay(10)

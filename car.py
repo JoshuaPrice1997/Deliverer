@@ -3,13 +3,15 @@ import math
 
 class car:
 	
-	def __init__(self,image,x=100,y=100,direc=0,speed = 1):
+	def __init__(self,image,x=100,y=100,direc=0,acc = 0.1):
 		self.x = x
 		self.y = y
 		self.direc = direc
 		self.image = pygame.transform.rotate(image,direc)
-		self.speed = speed
 		self.center = image.get_rect().center
+		self.acc = acc
+		self.xSpeed = 0
+		self.ySpeed = 0
 
 	def print(self,screen):
 		#The image is rotated during the print process as the original image needs to be kept
@@ -25,21 +27,44 @@ class car:
 
 	def drive(self,key,map):
 		#tank controls hooray
-		rad = self.direc*(math.pi/180) 
-		if key[pygame.K_w]:
-
-			self.x += self.speed * math.sin(rad)
-			self.y -= self.speed * math.cos(rad)
-
-
+		print('direction ' + str(self.direc) + ' xSpeed: ' + str(self.xSpeed) + ', ySpeed: ' + str(self.ySpeed))
 		if key[pygame.K_a]:
-			self.direc = (self.direc - self.speed) % 360
+			self.direc = (self.direc - 1) % 360
 
 		if key[pygame.K_d]:
-			self.direc = (self.direc + self.speed) % 360
+			self.direc = (self.direc + 1) % 360
 
-		if key[pygame.K_s]:
-			self.x -= self.speed * math.sin(rad)
-			self.y += self.speed * math.cos(rad)
+		rad = self.direc*(math.pi/180) 
+
+		if key[pygame.K_w] | key[pygame.K_s]:
+			if key[pygame.K_w]:
+				if self.xSpeed < 10:
+					self.xSpeed += self.acc * math.sin(rad)
+				if self.ySpeed <10:
+					self.ySpeed -= self.acc * math.cos(rad)
+			if key[pygame.K_s]:
+				if self.xSpeed > -10:
+					self.xSpeed -= self.acc * math.sin(rad)
+				if self.ySpeed > -10:
+					self.ySpeed += self.acc * math.cos(rad)
+		else:
+			if self.xSpeed < 0:
+				self.xSpeed += self.acc * -self.xSpeed/10
+			elif self.xSpeed > 0:
+				self.xSpeed -= self.acc * self.xSpeed/10
+
+			if self.ySpeed < 0:
+				self.ySpeed += self.acc * -self.ySpeed/10
+			elif self.ySpeed > 0:
+				self.ySpeed -= self.acc * self.ySpeed/10
+
+			if abs(self.xSpeed) < 0.1:
+				self.xSpeed = 0
+			if abs(self.ySpeed) < 0.1:
+				self.ySpeed = 0
+
+		
+		self.x += self.xSpeed
+		self.y += self.ySpeed
 
 
