@@ -10,8 +10,10 @@ class car:
 		self.image = pygame.transform.rotate(image,direc)
 		self.center = image.get_rect().center
 		self.acc = acc
-		self.xSpeed = 0
-		self.ySpeed = 0
+		self.xVel = 0
+		self.yVel = 0
+		self.speed = 0
+		self.reverseEnabled = True
 
 	def print(self,screen):
 		#The image is rotated during the print process as the original image needs to be kept
@@ -27,7 +29,11 @@ class car:
 
 	def drive(self,key,map):
 		#tank controls hooray
-		print('direction ' + str(self.direc) + ' xSpeed: ' + str(self.xSpeed) + ', ySpeed: ' + str(self.ySpeed))
+		print('direction ' + str(self.direc) + ' xVel: ' + str(self.xVel) + ', yVel: ' + str(self.yVel) + ', reverse: ' + str(self.reverseEnabled))
+
+		if self.speed <0.1:
+			self.reverseEnabled = True
+
 		if key[pygame.K_a]:
 			self.direc = (self.direc - 1) % 360
 
@@ -38,33 +44,64 @@ class car:
 
 		if key[pygame.K_w] | key[pygame.K_s]:
 			if key[pygame.K_w]:
-				if self.xSpeed < 10:
-					self.xSpeed += self.acc * math.sin(rad)
-				if self.ySpeed <10:
-					self.ySpeed -= self.acc * math.cos(rad)
+				if self.xVel < 10:
+					self.xVel += self.acc * math.sin(rad)
+				if self.yVel <10:
+					self.yVel -= self.acc * math.cos(rad)
+				if self.speed < 10:
+					self.speed += self.acc
+
+				if self.speed > 0:
+					self.reverseEnabled = False
 			if key[pygame.K_s]:
-				if self.xSpeed > -10:
-					self.xSpeed -= self.acc * math.sin(rad)
-				if self.ySpeed > -10:
-					self.ySpeed += self.acc * math.cos(rad)
+				if self.reverseEnabled:
+					if self.xVel > -10:
+						self.xVel -= self.acc * math.sin(rad)
+					if self.yVel > -10:
+						self.yVel += self.acc * math.cos(rad)
+					if self.speed > -10:
+						self.speed -= self.acc
+				else:
+					if self.xVel < 0:
+						self.xVel += self.acc 
+					elif self.xVel > 0:
+						self.xVel -= self.acc 
+
+					if self.yVel < 0:
+						self.yVel += self.acc
+					elif self.yVel > 0:
+						self.yVel -= self.acc
+
+					if self.speed > 0:
+						self.speed -= self.acc 
+					elif self.speed <0:
+						self.speed += self.acc 
 		else:
-			if self.xSpeed < 0:
-				self.xSpeed += self.acc * -self.xSpeed/10
-			elif self.xSpeed > 0:
-				self.xSpeed -= self.acc * self.xSpeed/10
+			#Friction slows you harder if you are going faster
+			if self.xVel < 0:
+				self.xVel += self.acc * -self.xVel/10
+			elif self.xVel > 0:
+				self.xVel -= self.acc * self.xVel/10
 
-			if self.ySpeed < 0:
-				self.ySpeed += self.acc * -self.ySpeed/10
-			elif self.ySpeed > 0:
-				self.ySpeed -= self.acc * self.ySpeed/10
+			if self.yVel < 0:
+				self.yVel += self.acc * -self.yVel/10
+			elif self.yVel > 0:
+				self.yVel -= self.acc * self.yVel/10
 
-			if abs(self.xSpeed) < 0.1:
-				self.xSpeed = 0
-			if abs(self.ySpeed) < 0.1:
-				self.ySpeed = 0
+			if self.speed > 0:
+				self.speed -= self.acc * self.speed/10
+			elif self.speed <0:
+				self.speed += self.acc * -self.speed/10
+
+			if abs(self.xVel) < 0.1:
+				self.reverseEnabled = True
+				self.xVel = 0
+			if abs(self.yVel) < 0.1:
+				self.reverseEnabled = True
+				self.yVel = 0
 
 		
-		self.x += self.xSpeed
-		self.y += self.ySpeed
+		self.x += self.xVel
+		self.y += self.yVel
 
 
