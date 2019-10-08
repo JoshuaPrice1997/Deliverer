@@ -14,6 +14,9 @@ class car:
 		self.yVel = 0
 		self.speed = 0
 		self.reverseEnabled = True
+		self.beta = 0
+		self.xRes = 0
+		self.yRes = 0
 
 	def print(self,screen):
 		#The image is rotated during the print process as the original image needs to be kept
@@ -27,9 +30,25 @@ class car:
 
 		screen.blit(image,(self.x-shift,self.y-shift))
 
+	def printStats(self,screen):
+		fonto = pygame.font.Font('\\WINDOWS\\Fonts\\ARIALN.TTF',20)
+		strings = ['Direction: ' + str(self.direc),
+				'Speed: ' + str(self.speed),
+				'xVel: ' + str(self.xVel),
+				'yVel: ' + str(self.yVel),
+				'reverse: ' + str(self.reverseEnabled),
+				'beta ' + str(self.beta),
+				'xRes ' + str(self.xRes),
+				'yRes ' + str(self.yRes)]
+		text = []
+		for string in strings:
+			text.append(fonto.render(string,1,(255,255,255)))
+
+		for i in range(len(text)):
+			screen.blit(text[i],(600,50+i*30))
+
 	def drive(self,key,map):
 		#tank controls hooray
-		print('direction ' + str(self.direc) + ' xVel: ' + str(self.xVel) + ', yVel: ' + str(self.yVel) + ', reverse: ' + str(self.reverseEnabled))
 
 		if self.speed <0.1:
 			self.reverseEnabled = True
@@ -40,7 +59,19 @@ class car:
 		if key[pygame.K_d]:
 			self.direc = (self.direc + 1) % 360
 
-		rad = self.direc*(math.pi/180) 
+		rad = self.direc*(math.pi/180)
+		moveRad = rad
+		if abs(self.xVel) > 0:
+			moveRad = math.atan(self.yVel / self.xVel)
+		
+			
+
+		self.beta = (rad - moveRad) % 2*math.pi
+		if self.beta > math.pi:
+			self.beta = 2 * math.pi - self.beta
+
+		self.xRes = math.sin(self.beta)
+		self.yRes = math.cos(self.beta)
 
 		if key[pygame.K_w] | key[pygame.K_s]:
 			if key[pygame.K_w]:
@@ -93,15 +124,18 @@ class car:
 			elif self.speed <0:
 				self.speed += self.acc * -self.speed/10
 
-			if abs(self.xVel) < 0.1:
-				self.reverseEnabled = True
+			if abs(self.xVel) < 0.2:
 				self.xVel = 0
-			if abs(self.yVel) < 0.1:
-				self.reverseEnabled = True
+			if abs(self.yVel) < 0.2:
 				self.yVel = 0
+			if abs(self.speed) < 0.2:
+				self.speed = 0
+			if abs(self.xVel < 0.2) & abs(self.yVel < 0.2):
+				self.reverseEnabled = True
 
 		
 		self.x += self.xVel
 		self.y += self.yVel
 
-
+		def getPos(self):
+			return (self.x,self.y)

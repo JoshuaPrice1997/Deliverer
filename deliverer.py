@@ -82,6 +82,7 @@ def main():
             printTiles(mapo,tiles,screen)
             player.drive(key,mapo)
             player.print(screen)
+            player.printStats(screen)
             
             #basic movement
             
